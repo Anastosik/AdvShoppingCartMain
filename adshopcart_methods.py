@@ -204,17 +204,27 @@ def fill_out_contact_us_form():
     driver.find_element(By.NAME, "categoryListboxContactUs").click()
     sleep(0.25)
     if driver.find_element(By.NAME, "categoryListboxContactUs").is_displayed():
-        # Select(driver.find_element(value="object:59")).select_by_visible_text("Laptops")
         Select(driver.find_element(By.NAME, 'categoryListboxContactUs')).select_by_visible_text("Laptops")
+    sleep(1)
+    Select(driver.find_element(By.NAME, 'productListboxContactUs')).select_by_visible_text("HP Chromebook 14 G1(ENERGY STAR)")
     sleep(1)
     driver.find_element(By.NAME, "emailContactUs").send_keys(locators.email)
     sleep(0.25)
     driver.find_element(By.NAME, "subjectTextareaContactUs").send_keys('Test. Laptops')
     sleep(0.25)
     if driver.find_element(By.XPATH, '//button[contains(., "SEND")]').is_displayed():
-        driver.find_element(By.XPATH, '//button[contains(., "SEND")]').click()
-        sleep(1)
+        print("----CONTACT US form is working properly. Test passed.----")
+    driver.find_element(By.XPATH, '//button[contains(., "SEND")]').click()
+    sleep(1)
+    # Check CONTINUE SHOPPING button is displayed and clickable
+    if driver.find_element(By.LINK_TEXT, "CONTINUE SHOPPING").is_displayed():
+        print("----CONTINUE SHOPPING button is displayed. Test passed.-----")
     driver.find_element(By.LINK_TEXT, "CONTINUE SHOPPING").click()
+    if driver.current_url == locators.adshopcart_url:
+        print(f"----CONTINUE SHOPPING button has been clicked. Test passed.----")
+    else:
+        print(f"CONTINUE SHOPPING button has NOT been clicked. Check your code")
+
 
 
 
