@@ -1,4 +1,3 @@
-import sys
 import datetime
 from time import sleep
 from selenium import webdriver
@@ -105,7 +104,7 @@ def check_user_created():
     sleep(1)
     if driver.find_element(By.XPATH, '//div[3]/div/div/label[contains(., " - No orders - ")]').is_displayed():
         print(f'----"-No Orders-" confirmation in My Orders is displayed. Test Passed.----')
-    sleep (0.25)
+    sleep(0.25)
     # Logout from Advantage Shopping Cart website
     driver.find_element(By.ID, "menuUser").click()
     sleep(1)
@@ -135,7 +134,7 @@ def delete_new_user():
         driver.find_element(By.XPATH, '//*[text() = "Delete Account"]').click()
         sleep(0.25)
     driver.find_element(By.XPATH, '//*[@id="deleteAccountPopup"]/div[3]/div[1]').click()
-    sleep(5)
+    sleep(7)
     # Check that a New User has been successfully deleted
     if driver.current_url == locators.adshopcart_url:
         print(f"----A New User with username {locators.new_username} got deleted. Test passed.----")
@@ -157,12 +156,71 @@ def login_with_deleted_credentials():
     else:
         print("'Incorrect user name or password.' error label is NOT displayed. Check your code.")
 
-setUp()
-create_new_user()
-check_user_created()
-check_we_login_with_new_cred()
-delete_new_user()
-login_with_deleted_credentials()
-tearDown()
+
+def check_homepage():
+    driver.get(locators.adshopcart_url)
+    sleep(0.5)
+    # Check that SPEAKERS, TABLETS, HEADPHONES, LAPTOPS, MICE texts are displayed.
+    if driver.find_element(By.ID, 'speakersTxt').is_displayed():
+        print("----SPEAKERS text is displayed. Test passed.----")
+    else:
+        print("SPEAKERS text is not visible.Check your code!")
+        sleep(0.25)
+    if driver.find_element(By.ID, 'tabletsTxt').is_displayed():
+        print("----TABLETS text is displayed. Test passed.----")
+    else:
+        print("TABLETS text is not visible.Check your code!")
+        sleep(0.25)
+    if driver.find_element(By.ID, 'laptopsTxt').is_displayed():
+        print("----LAPTOPS text is displayed. Test passed.----")
+    else:
+        print("LAPTOPS text is not visible.Check your code!")
+    sleep(0.25)
+    if driver.find_element(By.ID, 'miceTxt').is_displayed():
+        print("----MICE text is displayed. Test passed.----")
+    else:
+        print("MICE text is not visible.Check your code!")
+    sleep(0.25)
+    # Check that SPECIAL OFFER, POPULAR ITEMS and CONTACT US links at the top nav menu are clickable
+    driver.find_element(By.LINK_TEXT, 'SPECIAL OFFER').click()
+    if driver.find_element(By.LINK_TEXT, 'SPECIAL OFFER').is_displayed():
+        print("----SPECIAL OFFER link is displayed. Test passed.----")
+    sleep(1)
+    driver.find_element(By.LINK_TEXT, 'POPULAR ITEMS').click()
+    if driver.find_element(By.LINK_TEXT, 'POPULAR ITEMS').is_displayed():
+        print("----POPULAR ITEMS link is displayed. Test passed.----")
+    sleep(1)
+    driver.find_element(By.LINK_TEXT, 'CONTACT US').click()
+    if driver.find_element(By.LINK_TEXT, 'CONTACT US').is_displayed():
+        print("----CONTACT US link is displayed. Test passed.----")
+        sleep(1)
+    # Check main logo is displayed.
+    if driver.find_element(By.XPATH, '//*[contains(., "dvantage")]').is_displayed() and \
+            driver.find_element(By.XPATH, '//*[contains(., "DEMO")]').is_displayed():
+        print("----Main Logo is displayed. Test passed.----")
+
+
+def fill_out_contact_us_form():
+    driver.find_element(By.NAME, "categoryListboxContactUs").click()
+    sleep(0.25)
+    if driver.find_element(By.NAME, "categoryListboxContactUs").is_displayed():
+        # Select(driver.find_element(value="object:59")).select_by_visible_text("Laptops")
+        Select(driver.find_element(By.NAME, 'categoryListboxContactUs')).select_by_visible_text("Laptops")
+    sleep(1)
+    driver.find_element(By.NAME, "emailContactUs").send_keys(locators.email)
+    sleep(0.25)
+    driver.find_element(By.NAME, "subjectTextareaContactUs").send_keys('Test. Laptops')
+    sleep(0.25)
+    if driver.find_element(By.XPATH, '//button[contains(., "SEND")]').is_displayed():
+        driver.find_element(By.XPATH, '//button[contains(., "SEND")]').click()
+        sleep(1)
+    driver.find_element(By.LINK_TEXT, "CONTINUE SHOPPING").click()
+
+
+
+
+
+
+
 
 
